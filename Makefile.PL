@@ -9,7 +9,7 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Lingua::ENG::Numbers converts arbitrary numbers into human-oriented English text. Limited support is included for parsing standardly formatted numbers (i.e. 3,213.23). But no attempt has been made to handle any complex formats. Support for multiple variants of English are supported. Currently only \"American\" formatting is supported.",
+  "ABSTRACT" => "Number 2 word conversion for ENG.",
   "AUTHOR" => "Stephen Pandich <pandich\@yahoo.com>",
   "BUILD_REQUIRES" => {
     "Test::More" => 0,
@@ -30,7 +30,7 @@ my %WriteMakefileArgs = (
     "vars" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.044",
+  "VERSION" => "0.0577",
   "test" => {
     "TESTS" => "t/*.t"
   }

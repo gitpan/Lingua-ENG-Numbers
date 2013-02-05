@@ -1,7 +1,7 @@
 # For Emacs: -*- mode:cperl; mode:folding; coding:utf-8; -*-
 
 package Lingua::ENG::Numbers;
-# ABSTRACT: Lingua::ENG::Numbers converts arbitrary numbers into human-oriented English text. Limited support is included for parsing standardly formatted numbers (i.e. 3,213.23). But no attempt has been made to handle any complex formats. Support for multiple variants of English are supported. Currently only "American" formatting is supported.
+# ABSTRACT: Number 2 word conversion for ENG.
 
 # {{{ use block
 
@@ -36,8 +36,7 @@ use vars qw(
 # }}}
 # {{{ variables declaration
 
-my($ver)      = ('$Rev: 440 $' =~ m{(\d+)}xms);
-our $VERSION = $ver / 10_000;
+our $VERSION = 0.0577;
 
 BEGIN {
 
@@ -487,7 +486,7 @@ Lingua::ENG::Numbers - Converts numeric values into their English string equival
 
 =head1 VERSION
 
-version 0.044
+version 0.0577
 
 =head1 SYNOPSIS
 
@@ -518,6 +517,8 @@ Perl 5, Exporter, Carp
 
 
 =head1 DESCRIPTION
+
+Number 2 word conversion for ENG.
 
 Lingua::ENG::Numbers converts arbitrary numbers into human-oriented
 English text. Limited support is included for parsing standardly

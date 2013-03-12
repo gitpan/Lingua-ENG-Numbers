@@ -5,6 +5,7 @@ package Lingua::ENG::Numbers;
 
 # {{{ use block
 
+use 5.10.1;
 use strict;
 use warnings;
 
@@ -36,7 +37,7 @@ use vars qw(
 # }}}
 # {{{ variables declaration
 
-our $VERSION = 0.0577;
+our $VERSION = 0.0682;
 
 BEGIN {
 
@@ -486,7 +487,7 @@ Lingua::ENG::Numbers - Converts numeric values into their English string equival
 
 =head1 VERSION
 
-version 0.0577
+version 0.0682
 
 =head1 SYNOPSIS
 

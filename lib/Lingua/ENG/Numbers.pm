@@ -8,10 +8,9 @@ package Lingua::ENG::Numbers;
 use 5.10.1;
 use strict;
 use warnings;
-
 use base qw(Exporter);
-
 use Carp;
+
 use vars qw(
             @EXPORT_OK
             $VERSION
@@ -37,7 +36,7 @@ use vars qw(
 # }}}
 # {{{ variables declaration
 
-our $VERSION = 0.0682;
+our $VERSION = 0.1101;
 
 BEGIN {
 
@@ -246,23 +245,7 @@ sub pow10Block {
 
 sub pow10 {
     my ($number) = @_;
-    return int(log10($number));
-}
-
-# }}}
-# {{{ log10
-
-sub log10 {
-    my ($number) = @_;
-    return logn(10, $number);
-}
-
-# }}}
-# {{{ logn
-
-sub logn {
-    my ($base, $number) = @_;
-    return log($number) / log($base);
+    return (length $number) - 1;
 }
 
 # }}}
@@ -312,18 +295,18 @@ sub parse_number {
     my ($number) = @_;
 
     if (! defined $number) { # VSM 0.02 - Number zero is not a valid condition
-        return {'0'=>$NUMBER_NAMES{$MODE}{0}};
+        return { '0' => $NUMBER_NAMES{$MODE}{0} };
     }
 
     my %names;
     my $powerOfTen = pow10Block($number);
     while ($powerOfTen > 0) {
-        my $factor = int($number / 10**$powerOfTen);
-        my $component = $factor * 10**$powerOfTen;
-        my $magnitude = $NUMBER_NAMES{$MODE}{10**$powerOfTen};
+        my $factor     = int($number / 10**$powerOfTen);
+        my $component  = $factor * 10**$powerOfTen;
+        my $magnitude  = $NUMBER_NAMES{$MODE}{10**$powerOfTen};
         my $factorName = &parse_number_low($factor);
 
-        $names{$component}{'factor'} = $factorName;
+        $names{$component}{'factor'}    = $factorName;
         $names{$component}{'magnitude'} = $magnitude;
 
         $number -= $component;
@@ -408,17 +391,20 @@ sub do_get_string {
 
     my @blockStrings;
     my $number = $self->{'string_data'}{$block};
-    for my $component(sort {$b <=> $a } keys %$number) {
+    for my $component( sort {$b <=> $a } keys %{$number} ) {
         my $magnitude = $$number{$component}{'magnitude'};
-        my $factor = $$number{$component}{'factor'};
+        my $factor    = $$number{$component}{'factor'};
 
         my @strings;
-        map { push @strings, join($OUTPUT_NUMBER_DELIMITER{$MODE}, @$_) } @$factor;
+        map { push @strings, join($OUTPUT_NUMBER_DELIMITER{$MODE}, @{$_}) } @{$factor};
+
         my $string = join($OUTPUT_GROUP_DELIMITER{$MODE}, @strings) . ' ' . $magnitude;
         push @blockStrings, $string;
     }
 
     my $blockString = join($OUTPUT_BLOCK_DELIMITER{$MODE}, @blockStrings);
+    $blockString =~ s{(?<=.),?\s?Zero}{}xmsg;
+
     return $blockString;
 }
 
@@ -428,15 +414,25 @@ sub do_get_string {
 sub parse {
     my ($self, $numberString) = @_;
 
+    if ( $numberString && $numberString =~ m{\A\d+\.?\d*?e\+\d+\z}xms ) {
+      croak q{You shouldn't use scientific notation};
+    }
+
+    croak 'You should specify a number from interval [0, 10^66)'
+        if    !defined $numberString
+           || $numberString !~ m{\A\d+\z}xms
+           || $numberString < 0
+           || $numberString >= 10 ** 66;
+
     if (! defined $self || ! $self) {
         return $FALSE;
     }
 
     my ($number, $decimal, $sign) = &string_to_number($numberString);
 
-    $self->{'numeric_data'}{'number'} = $number;
+    $self->{'numeric_data'}{'number'}  = $number;
     $self->{'numeric_data'}{'decimal'} = $decimal;
-    $self->{'numeric_data'}{'sign'} = $sign;
+    $self->{'numeric_data'}{'sign'}    = $sign;
 
     if (defined $number && length($number)>0) { # VSM 0.02 - Number zero is not a valid condition
         $self->{'string_data'}{'number'} = &parse_number($number);
@@ -462,6 +458,7 @@ sub get_string {
 
     my @strings;
     push @strings, $self->do_get_string('number');
+
     if ($self->{'string_data'}{'decimal'}) {
         push @strings, $self->do_get_string('decimal');
     }
@@ -487,7 +484,7 @@ Lingua::ENG::Numbers - Converts numeric values into their English string equival
 
 =head1 VERSION
 
-version 0.0682
+version 0.1101
 
 =head1 SYNOPSIS
 

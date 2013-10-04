@@ -12,7 +12,9 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "Number 2 word conversion for ENG.",
   "AUTHOR" => "Stephen Pandich <pandich\@yahoo.com>",
   "BUILD_REQUIRES" => {
+    "Test::Exception" => 0,
     "Test::More" => 0,
+    "bignum" => 0,
     "utf8" => 0
   },
   "CONFIGURE_REQUIRES" => {
@@ -30,7 +32,7 @@ my %WriteMakefileArgs = (
     "vars" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.0682",
+  "VERSION" => "0.1101",
   "test" => {
     "TESTS" => "t/*.t"
   }

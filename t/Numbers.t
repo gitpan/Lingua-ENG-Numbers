@@ -9,7 +9,9 @@
 use strict;
 use warnings;
 use utf8;
+use bignum;
 
+use Test::Exception;
 use Test::More;
 
 # }}}
@@ -37,17 +39,15 @@ $tests++;
 
 $numbers = Lingua::ENG::Numbers->new;
 $numbers->parse(10 ** 10);
-is($numbers->get_string, 'Ten Billion, Zero', '10^10 in English');
+is($numbers->get_string, 'Ten Billion', '10^10 in English');
 $tests++;
 
 $numbers = Lingua::ENG::Numbers->new;
-$numbers->parse(10 ** 100);
-is($numbers->get_string, '', 'out of bounds');
+dies_ok(sub { $numbers->parse(10 ** 100); }, 'out of bounds');
 $tests++;
 
 $numbers = Lingua::ENG::Numbers->new;
-$numbers->parse();
-is($numbers->get_string, '', 'undef args');
+dies_ok(sub { $numbers->parse(); }, 'undef args');
 $tests++;
 
 # }}}

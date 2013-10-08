@@ -36,7 +36,7 @@ use vars qw(
 # }}}
 # {{{ variables declaration
 
-our $VERSION = 0.1101;
+our $VERSION = 0.1106;
 
 BEGIN {
 
@@ -484,7 +484,7 @@ Lingua::ENG::Numbers - Converts numeric values into their English string equival
 
 =head1 VERSION
 
-version 0.1101
+version 0.1106
 
 =head1 SYNOPSIS
 
@@ -578,6 +578,7 @@ Creates, optionally initializes, and returns a new instance.
 =item $number->parse $numberString
 
 Parses a number and (re)initializes an instance.
+Only a number from interval [0, 10^66) can be converted.
 
 =back
 
